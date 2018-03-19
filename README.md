@@ -12,6 +12,7 @@ Install chinese using pip:
 
 ```sh
 $ pip install chinese
+$ pynlpir update
 ```
 
 Start analyzing Chinese text:
