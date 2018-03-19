@@ -1,0 +1,32 @@
+digraph overview {
+  graph [
+    charset = "UTF-8";
+    rankdir = LR;
+  ];
+
+  text [label="Chinese text"];
+  token1 [label="token 1"];
+  token2 [label="..."];
+  token3 [label="token n"];
+
+  subgraph cluster_0 {
+    tokenizer [label="tokenizer",shape=box];
+  };
+
+  subgraph cluster_1 {
+    dictionary [label = "dictionary",shape=box];
+  };
+
+  text -> tokenizer;
+  tokenizer -> token1;
+  tokenizer -> token2;
+  tokenizer -> token3;
+  token1 -> dictionary;
+  token2 -> dictionary;
+  token3 -> dictionary;
+  dictionary -> result;
+  result -> pinyin;
+  result -> definitions;
+  result -> speech;
+  result -> "etc.";
+}
