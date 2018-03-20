@@ -80,7 +80,7 @@ class ChineseAnalyzerResult:
 
         return paragraphs_cleaned
 
-    def  sentences(self):
+    def sentences(self):
         """Returns a list of sentences in a provided text."""
         result = []
         delimiters = re.compile('[。？！；]')
@@ -90,6 +90,10 @@ class ChineseAnalyzerResult:
             result += [sentence for sentence in delimiters.split(paragraph) if sentence]
         
         return result
+    
+    def search(self, string):
+        """Returns a list of sentences containing the argument string."""
+        return [sentence for sentence in self.sentences() if string in sentence]
 
     def pinyin(self, *, force=False, all_readings=False):
         """Returns a pinyin representation of the provided text.
