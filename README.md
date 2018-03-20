@@ -213,7 +213,27 @@ Counter({'的': 9, '和': 3, '在': 1, '就': 1, '以': 1})
 >>> result.say(out='say.aac') # Save the speech to out.
 ```
 
-* Extracting the lookup result
+* Get the number of tokens.
+
+```py
+>>> result = analyzer.parse('我是中国人')
+>>> result.tokens()
+['我', '是', '中国', '人']
+>>> len(result)
+4
+```
+
+* Check whether a token is in the result.
+
+```py
+>>> result = analyzer.parse('我是中国人')
+>>> '中国' in result
+True
+>>> '我是' in result
+False
+```
+
+* Extract the lookup result.
 
 ```py
 >>> result = analyzer.parse('你叫什么名字？')
