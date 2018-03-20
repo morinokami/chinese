@@ -53,18 +53,24 @@ class ChineseAnalyzerResult:
         """Returns the provided string as is."""
         return ''.join(token[0] for token in self.__tokens)
 
-    def tokens(self, details=False):
+    def tokens(self, *, details=False, unique=False):
         """Returns tokens in the provided text.
 
         Args:
             details (bool): If set to True, the details of tokens are also returned.
             The content in a detail depends on the tokenizer used.
+            unique (bool): If set to True, a unique collection of tokens is returned.
         
         Returns:
-            A list of tokens are returned by defulat. If positions is set to True,
+            A list of tokens are returned by defulat. If details is set to True,
             a list of tuples containing tokens and their details are returned.
         """
-        return [token for token in self.__tokens] if details else [token[0] for token in self.__tokens]
+        result = [token for token in self.__tokens] if details else [token[0] for token in self.__tokens]
+        if unique:
+            from collections import OrderedDict
+            result = list(OrderedDict.fromkeys(result))
+        
+        return result
     
     def freq(self):
         """Returns a Counter object that counts the number of occurrences for each token."""

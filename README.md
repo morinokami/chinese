@@ -122,7 +122,10 @@ Start analyzing Chinese text:
 >>> result.tokens()
 ['我', '的', '汉语', '马马虎虎']
 >>> result.tokens(details=True) # If the details option is set to True, additional information is also attached.
-[('我', 0, 1), ('的', 1, 2), ('汉语', 2, 4), ('马马虎虎', 4, 8)] # In this case, the positions of tokens are included. 
+[('我', 0, 1), ('的', 1, 2), ('汉语', 2, 4), ('马马虎虎', 4, 8)] # In this case, the positions of tokens are included.
+>>> result = analyzer.parse('的的的的的在的的的的就以和和和')
+>>> result.tokens(unique=True) # You can get a unique collection of tokens using unique option.
+['的', '在', '就', '以', '和']
 ```
 
 * `freq()` returns a Counter object that counts the number of occurrences for each token.

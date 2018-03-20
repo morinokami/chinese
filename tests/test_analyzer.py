@@ -40,15 +40,25 @@ def test_tokens_pynlpir2():
     expected = []
     assert result.tokens() == expected
 
-def test_tokens_with_details1():
+def test_tokens_details1():
     result = analyzer.parse('永和服装饰品有限公司')
     expected = [('永和', 0, 2), ('服装', 2, 4), ('饰品', 4, 6), ('有限公司', 6, 10)]
     assert result.tokens(details=True) == expected
 
-def test_tokens_with_details2():
+def test_tokens_details2():
     result = analyzer.parse('')
     expected = []
     assert result.tokens(details=True) == expected
+
+def test_tokens_unique1():
+    result = analyzer.parse('的的的的的在的的的的就以和和和')
+    expected = ['的', '在', '就', '以', '和']
+    assert result.tokens(unique=True) == expected
+
+def test_tokens_unique2():
+    result = analyzer.parse('')
+    expected = []
+    assert result.tokens(unique=True) == expected
 
 def test_freq():
     from collections import Counter
