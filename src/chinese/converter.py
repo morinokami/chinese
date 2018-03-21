@@ -24,7 +24,7 @@ class Converter:
         if not isinstance(string, str):
             raise errors.InvalidArgumentTypeError('Argument must be a string: {}'.format(string))
 
-        if not string[-1].isdigit():
+        if len(string) == 0 or not string[-1].isdigit():
             return string
 
         characters, tone = string[:-1], int(string[-1])
@@ -48,6 +48,12 @@ class Converter:
         return characters
 
     def uglify(self, string):
+        if not isinstance(string, str):
+            raise errors.InvalidArgumentTypeError('Argument must be a string: {}'.format(string))
+
+        if len(string) == 0:
+            return string
+
         characters, tone = self.__replace_toned_vowel(string)
         return characters + tone
 
