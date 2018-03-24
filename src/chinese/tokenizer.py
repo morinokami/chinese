@@ -20,14 +20,12 @@ class Tokenizer:
         jieba = auto()
         pynlpir = auto()
     
-    def __init__(self):
-        pynlpir.open()
-    
     def tokenize(self, string, *, traditional=False, engine=Engine.jieba):
         """Returns a list of tokens"""
         if engine == self.Engine.jieba:
             return self.__jieba_tokenize(string, traditional)
         elif engine == self.Engine.pynlpir:
+            pynlpir.open()
             return self.__pynlpir_tokenize(string)
         else:
             raise errors.InvalidEngineError('InvalidEngineError: {}'.format(engine))
