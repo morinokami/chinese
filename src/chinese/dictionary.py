@@ -125,6 +125,8 @@ class Dictionary:
         return self.__lookup(self.traditional, string)
     
     def __lookup(self, dictionary, string):
+        if len(string) == 0:
+            return []
         if string in dictionary:
             return dictionary[string]
         return [Traditional(string, None, None)] if dictionary['name'] == 'traditional' else [Simplified(string, None, None)]

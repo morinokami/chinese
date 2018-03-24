@@ -20,17 +20,17 @@ class ChineseAnalyzer:
         self.converter = Converter()
         self.tokenizer = Tokenizer()
 
-    def parse(self, string, *, traditional=False, engine=Tokenizer.Engine.jieba, dictionary=None):
+    def parse(self, string, *, traditional=False, using=Tokenizer.jieba, dictionary=None):
         """Returns a ChineseAnalyzerResult object.
 
         Args:
             string (str): A Chinese text.
-            traditional (bool): If set to True, string will be parsed as a Traditional
+            traditional (bool): If set to True, the string will be parsed as a Traditional
                 Chinese text.
-            engine (Tokenizer.Engine): A Tokenizer.Engine object.
-            dictionary (str): A path to dictionary file.
+            using: An Engine object or a custom tokenizer derived from TokenizerInterface.
+            dictionary (str): A path to your dictionary file.
         """
-        tokens = self.tokenizer.tokenize(string, traditional=traditional, engine=engine)
+        tokens = self.tokenizer.tokenize(string, traditional=traditional, using=using)
         if dictionary is not None:
             self.dictionary.load(dictionary)
         if traditional:
@@ -53,18 +53,24 @@ class ChineseAnalyzerResult:
         """Returns the provided string as is."""
         return ''.join(token[0] for token in self.__tokens)
 
-    def tokens(self, details=False):
+    def tokens(self, *, details=False, unique=False):
         """Returns tokens in the provided text.
 
         Args:
             details (bool): If set to True, the details of tokens are also returned.
             The content in a detail depends on the tokenizer used.
+            unique (bool): If set to True, a unique collection of tokens is returned.
         
         Returns:
-            A list of tokens are returned by defulat. If positions is set to True,
+            A list of tokens are returned by defulat. If details is set to True,
             a list of tuples containing tokens and their details are returned.
         """
-        return [token for token in self.__tokens] if details else [token[0] for token in self.__tokens]
+        result = [token for token in self.__tokens] if details else [token[0] for token in self.__tokens]
+        if unique:
+            from collections import OrderedDict
+            result = list(OrderedDict.fromkeys(result))
+        
+        return result
     
     def freq(self):
         """Returns a Counter object that counts the number of occurrences for each token."""
@@ -80,7 +86,7 @@ class ChineseAnalyzerResult:
 
         return paragraphs_cleaned
 
-    def  sentences(self):
+    def sentences(self):
         """Returns a list of sentences in a provided text."""
         result = []
         delimiters = re.compile('[。？！；]')
@@ -90,6 +96,10 @@ class ChineseAnalyzerResult:
             result += [sentence for sentence in delimiters.split(paragraph) if sentence]
         
         return result
+    
+    def search(self, string):
+        """Returns a list of sentences containing the argument string."""
+        return [sentence for sentence in self.sentences() if string in sentence]
 
     def pinyin(self, *, force=False, all_readings=False):
         """Returns a pinyin representation of the provided text.

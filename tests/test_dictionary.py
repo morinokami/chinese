@@ -15,71 +15,48 @@ dictionary = Dictionary()
 
 ## lookup
 
-def test_lookup_with_simplified_chinese():
-    result = dictionary.lookup_with_simplified_chinese('爱')
-    expected = [Simplified('愛', ['ai4'], ['to love', 'to be fond of', 'to like', 'affection', 'to be inclined (to do sth)', 'to tend to (happen)'])]
+@pytest.mark.parametrize('arg, expected',
+                         [('爱', [Simplified('愛', ['ai4'], ['to love', 'to be fond of', 'to like', 'affection', 'to be inclined (to do sth)', 'to tend to (happen)'])]),
+                          ('宝贝', [Simplified('寶貝', ['bao3', 'bei4'], ['treasured object', 'treasure', 'darling', 'baby', 'cowry', 'good-for-nothing or queer character'])]),
+                          ('普通话', [Simplified('普通話', ['pu3', 'tong1', 'hua4'], ['Mandarin (common language)', 'Putonghua (common speech of the Chinese language)', 'ordinary speech'])]),
+                          ('？', [Simplified('？', None, None)]),
+                          ('', []),
+                         ])
+def test_lookup_with_simplified_chinese(arg, expected):
+    result = dictionary.lookup_with_simplified_chinese(arg)
     assert result == expected
 
-def test_lookup_with_simplified_chinese_two_characters():
-    result = dictionary.lookup_with_simplified_chinese('宝贝')
-    expected = [Simplified('寶貝', ['bao3', 'bei4'], ['treasured object', 'treasure', 'darling', 'baby', 'cowry', 'good-for-nothing or queer character'])]
-    assert result == expected
-
-def test_lookup_with_simplified_chinese_three_characters():
-    result = dictionary.lookup_with_simplified_chinese('普通话')
-    expected = [Simplified('普通話', ['pu3', 'tong1', 'hua4'], ['Mandarin (common language)', 'Putonghua (common speech of the Chinese language)', 'ordinary speech'])]
-    assert result == expected
-
-def test_lookup_with_traditional_chinese():
-    result = dictionary.lookup_with_traditional_chinese('馬')
-    expected = [Traditional('马', ['Ma3'], ['surname Ma', 'abbr. for Malaysia 馬來西亞|马来西亚[Ma3 lai2 xi1 ya4]']), Traditional('马', ['ma3'], ['horse', 'CL:匹[pi3]', 'horse or cavalry piece in Chinese chess', 'knight in Western chess'])]
-    assert result == expected
-
-def test_lookup_with_traditional_chinese_two_characters():
-    result = dictionary.lookup_with_traditional_chinese('中國')
-    expected = [Traditional('中国', ['Zhong1', 'guo2'], ['China'])]
-    assert result == expected
-
-def test_lookup_with_traditional_chinese_three_characters():
-    result = dictionary.lookup_with_traditional_chinese('繁體字')
-    expected = [Traditional('繁体字', ['fan2', 'ti3', 'zi4'], ['traditional Chinese character'])]
-    assert result == expected
-
-def test_lookup_with_non_chinese_character_simplified():
-    result = dictionary.lookup_with_simplified_chinese('？')
-    expected = [Simplified('？', None, None)]
-    assert result == expected
-
-def test_lookup_with_non_chinese_character_traditional():
-    result = dictionary.lookup_with_traditional_chinese('？')
-    expected = [Traditional('？', None, None)]
+@pytest.mark.parametrize('arg, expected',
+                         [('馬', [Traditional('马', ['Ma3'], ['surname Ma', 'abbr. for Malaysia 馬來西亞|马来西亚[Ma3 lai2 xi1 ya4]']), Traditional('马', ['ma3'], ['horse', 'CL:匹[pi3]', 'horse or cavalry piece in Chinese chess', 'knight in Western chess'])]),
+                          ('中國', [Traditional('中国', ['Zhong1', 'guo2'], ['China'])]),
+                          ('繁體字', [Traditional('繁体字', ['fan2', 'ti3', 'zi4'], ['traditional Chinese character'])]),
+                          ('？', [Traditional('？', None, None)]),
+                          ('', []),
+                         ])
+def test_lookup_with_traditional_chinese(arg, expected):
+    result = dictionary.lookup_with_traditional_chinese(arg)
     assert result == expected
 
 ## lookup_pinyin
 
-def test_lookup_pinyin_with_simplified_chinese():
-    result = dictionary.lookup_pinyin_with_simplified_chinese('我')
-    expected = 'wǒ'
+@pytest.mark.parametrize('arg, expected',
+                         [('我', 'wǒ'),
+                          ('？', '？'),
+                          ('P', 'P'),
+                          ('', ''),
+                         ])
+def test_lookup_pinyin_with_simplified_chinese(arg, expected):
+    result = dictionary.lookup_pinyin_with_simplified_chinese(arg)
     assert result == expected
 
-def test_lookup_pinyin_with_traditional_chinese():
-    result = dictionary.lookup_pinyin_with_traditional_chinese('體')
-    expected = 'tǐ'
-    assert result == expected
-
-def test_lookup_pinyin_with_non_chinese_character_simplified1():
-    result = dictionary.lookup_pinyin_with_simplified_chinese('？')
-    expected = '？'
-    assert result == expected
-
-def test_lookup_pinyin_with_non_chinese_character_simplified2():
-    result = dictionary.lookup_pinyin_with_simplified_chinese('P')
-    expected = 'P'
-    assert result == expected
-
-def test_lookup_pinyin_with_non_chinese_character_traditional():
-    result = dictionary.lookup_pinyin_with_traditional_chinese('？')
-    expected = '？'
+@pytest.mark.parametrize('arg, expected',
+                         [('體', 'tǐ'),
+                          ('？', '？'),
+                          ('P', 'P'),
+                          ('', ''),
+                         ])
+def test_lookup_pinyin_with_traditional_chinese(arg, expected):
+    result = dictionary.lookup_pinyin_with_traditional_chinese(arg)
     assert result == expected
 
 def test_lookup_pinyin_with_simplified_chinese_raises():
@@ -98,29 +75,22 @@ def test_lookup_pinyin_with_traditional_chinese_raises():
 
 ## lookup_meaning
 
-def test_lookup_meaning_with_simplified_chinese():
-    result = dictionary.lookup_meaning_with_simplified_chinese('我')
-    expected = ['I', 'me', 'my']
+@pytest.mark.parametrize('arg, expected',
+                         [('我', ['I', 'me', 'my']),
+                          ('？', None),
+                          ('P', None),
+                         ])
+def test_lookup_meaning_with_simplified_chinese(arg, expected):
+    result = dictionary.lookup_meaning_with_simplified_chinese(arg)
     assert result == expected
 
-def test_lookup_meaning_with_traditional_chinese():
-    result = dictionary.lookup_meaning_with_traditional_chinese('體')
-    expected = ['body', 'form', 'style', 'system', 'substance', 'to experience', 'aspect (linguistics)']
-    assert result == expected
-
-def test_lookup_meaning_with_non_chinese_character_simplified1():
-    result = dictionary.lookup_meaning_with_simplified_chinese('？')
-    expected = None
-    assert result == expected
-
-def test_lookup_meaning_with_non_chinese_character_simplified2():
-    result = dictionary.lookup_meaning_with_simplified_chinese('P')
-    expected = None
-    assert result == expected
-
-def test_lookup_meaning_with_non_chinese_character_traditional():
-    result = dictionary.lookup_meaning_with_traditional_chinese('？')
-    expected = None
+@pytest.mark.parametrize('arg, expected',
+                         [('體', ['body', 'form', 'style', 'system', 'substance', 'to experience', 'aspect (linguistics)']),
+                          ('？', None),
+                          ('P', None),
+                         ])
+def test_lookup_meaning_with_traditional_chinese(arg, expected):
+    result = dictionary.lookup_meaning_with_traditional_chinese(arg)
     assert result == expected
 
 def test_lookup_meaning_with_simplified_chinese_raises():
@@ -139,10 +109,11 @@ def test_lookup_meaning_with_traditional_chinese_raises():
 
 ## is_chinese_character
 
-def test_is_chinese_character1():
-    result = dictionary.is_chinese_character('好')
-    assert result
-
-def test_is_chinese_character2():
-    result = dictionary.is_chinese_character('あ')
-    assert not result
+@pytest.mark.parametrize('arg, expected',
+                         [('好', True),
+                          ('あ', False),
+                          ('A', False),
+                         ])
+def test_is_chinese_character(arg, expected):
+    result = dictionary.is_chinese_character(arg)
+    assert result == expected
