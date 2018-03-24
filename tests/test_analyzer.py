@@ -5,7 +5,7 @@ import pytest
 
 from chinese import ChineseAnalyzer
 from chinese.dictionary import Simplified
-from chinese.tokenizer import Tokenizer
+from chinese.tokenizer import Tokenizer, TokenizerInterface
 import chinese.errors as errors
 
 analyzer = ChineseAnalyzer()
@@ -31,8 +31,28 @@ def test_tokens(arg, expected):
                           ('', []),
                          ])
 def test_tokens_pynlpir(arg, expected):
-    result = analyzer.parse(arg, engine=Tokenizer.Engine.pynlpir)
+    result = analyzer.parse(arg, using=Tokenizer.pynlpir)
     assert result.tokens() == expected
+
+def test_custom_tokenizer_works():
+    class MyTokenizer(TokenizerInterface):
+        def tokenize(self, string):
+            return [('seems',), ('not',), ('working',)]
+    my = MyTokenizer()
+    result = analyzer.parse('你好', using=my)
+    expected = [('seems',), ('not',), ('working',)]
+    assert result.tokens(details=True) == expected
+
+def test_invalid_custom_tokenizer_raises():
+    class InvalidTokenizer():
+        def do_something_awsome(self, x):
+            pass
+    invalid_tokenizer = InvalidTokenizer()
+    
+    with pytest.raises(errors.InvalidEngineError) as excinfo:
+        analyzer.parse('你好', using=invalid_tokenizer)
+    exception_msg = excinfo.value.args[0]
+    assert exception_msg == 'InvalidEngineError: {}'.format(invalid_tokenizer)
 
 @pytest.mark.parametrize('arg, expected',
                          [('永和服装饰品有限公司', [('永和', 0, 2), ('服装', 2, 4), ('饰品', 4, 6), ('有限公司', 6, 10)]),

@@ -99,7 +99,18 @@ Start analyzing Chinese text:
 # provided text as 繁体字.
 >>> result = analyzer.parse('你好世界', traditional=True)
 # The default tokenizer uses jieba's. You can also use pynlpir's to tokenize.
->>> result = analyzer.parse('你好世界', engine=analyzer.tokenizer.Engine.pynlpir)
+>>> result = analyzer.parse('你好世界', using=analyzer.tokenizer.pynlpir)
+# In addition, a custom tokenizer can be passed to the method.
+>>> from chinese.tokenizer import TokenizerInterface
+>>> class MyTokenizer(TokenizerInterface): # Custom tokenizer must inherit TokenizerInterface.
+...     # Custom tokenizer must implement tokenize() method.
+...     def tokenize(self, string):
+...         # tokenize() must return a list of tuples containing at least
+...         # a string as a first element.
+...         # For example: [('token1', ...), ('token2', ...), ...].
+...
+>>> my_tokenizer = MyTokenizer()
+>>> result = analyzer.parse('你好世界', using=my_tokenizer)
 # You can also specify the dictionary used for looking up each token.
 # You specify a path to a dictionary file for that and the file must have
 # the CC-CEDICT's dictionary file structure.

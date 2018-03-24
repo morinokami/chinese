@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+from abc import ABC
+from abc import abstractmethod
 from enum import Enum, auto
 import logging
 import os
@@ -14,21 +16,29 @@ import chinese.errors as errors
 logging.getLogger("jieba").setLevel(logging.WARNING)
 
 
+class Engine(Enum):
+    jieba = auto()
+    pynlpir = auto()
+
 class Tokenizer:
     
-    class Engine(Enum):
-        jieba = auto()
-        pynlpir = auto()
+    jieba = Engine.jieba
+    pynlpir = Engine.pynlpir
     
-    def tokenize(self, string, *, traditional=False, engine=Engine.jieba):
+    def __init__(self):
+        self.tokenizer = Engine.jieba
+    
+    def tokenize(self, string, *, traditional=False, using=Engine.jieba):
         """Returns a list of tokens"""
-        if engine == self.Engine.jieba:
+        if using == Engine.jieba:
             return self.__jieba_tokenize(string, traditional)
-        elif engine == self.Engine.pynlpir:
+        elif using == Engine.pynlpir:
             pynlpir.open()
             return self.__pynlpir_tokenize(string)
+        elif isinstance(using, TokenizerInterface):
+            return using.tokenize(string)
         else:
-            raise errors.InvalidEngineError('InvalidEngineError: {}'.format(engine))
+            raise errors.InvalidEngineError('InvalidEngineError: {}'.format(using))
 
     def __jieba_tokenize(self, string, traditional):
         if traditional:
@@ -41,3 +51,9 @@ class Tokenizer:
         if string == '':
             return []
         return pynlpir.segment(string)
+
+class TokenizerInterface(ABC):
+
+    @abstractmethod
+    def tokenize(self, string):
+        pass

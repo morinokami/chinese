@@ -20,17 +20,17 @@ class ChineseAnalyzer:
         self.converter = Converter()
         self.tokenizer = Tokenizer()
 
-    def parse(self, string, *, traditional=False, engine=Tokenizer.Engine.jieba, dictionary=None):
+    def parse(self, string, *, traditional=False, using=Tokenizer.jieba, dictionary=None):
         """Returns a ChineseAnalyzerResult object.
 
         Args:
             string (str): A Chinese text.
-            traditional (bool): If set to True, string will be parsed as a Traditional
+            traditional (bool): If set to True, the string will be parsed as a Traditional
                 Chinese text.
-            engine (Tokenizer.Engine): A Tokenizer.Engine object.
-            dictionary (str): A path to dictionary file.
+            using: An Engine object or a custom tokenizer derived from TokenizerInterface.
+            dictionary (str): A path to your dictionary file.
         """
-        tokens = self.tokenizer.tokenize(string, traditional=traditional, engine=engine)
+        tokens = self.tokenizer.tokenize(string, traditional=traditional, using=using)
         if dictionary is not None:
             self.dictionary.load(dictionary)
         if traditional:

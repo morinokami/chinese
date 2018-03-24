@@ -3,7 +3,7 @@
 
 import pytest
 
-from chinese.tokenizer import Tokenizer
+from chinese.tokenizer import Tokenizer, TokenizerInterface
 
 tokenizer = Tokenizer()
 
@@ -23,5 +23,14 @@ def test_tokenize(arg, expected):
                           ('', []),
                          ])
 def test_tokenize_pynlpir(arg, expected):
-    result = tokenizer.tokenize(arg, engine=tokenizer.Engine.pynlpir)
+    result = tokenizer.tokenize(arg, using=tokenizer.pynlpir)
+    assert result == expected
+
+def test_custom_tokenizer_works():
+    class MyTokenizer(TokenizerInterface):
+        def tokenize(self, string):
+            return [('seems',), ('not',), ('working',)]
+    my = MyTokenizer()
+    result = tokenizer.tokenize('你好', using=my)
+    expected = [('seems',), ('not',), ('working',)]
     assert result == expected
