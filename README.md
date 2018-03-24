@@ -102,7 +102,7 @@ Start analyzing Chinese text:
 >>> result = analyzer.parse('你好世界', using=analyzer.tokenizer.pynlpir)
 # In addition, a custom tokenizer can be passed to the method.
 >>> from chinese.tokenizer import TokenizerInterface
->>> class MyTokenizer(TokenizerInterface): # Custom tokenizer must inherit TokenizerInterface.
+>>> class MyTokenizer(TokenizerInterface): # Custom tokenizer must inherit from TokenizerInterface.
 ...     # Custom tokenizer must implement tokenize() method.
 ...     def tokenize(self, string):
 ...         # tokenize() must return a list of tuples containing at least
