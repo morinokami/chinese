@@ -5,7 +5,7 @@ with open('docs/README-rst') as f:
 
 setup(
     name='chinese',
-    version='0.2.0',
+    version='0.2.1',
     license='MIT',
     url='https://github.com/morinokami/chinese',
     keywords=['Chinese', 'text analysis'],
@@ -32,7 +32,7 @@ setup(
 
     packages=find_packages(where='src'),
     package_dir={'chinese': 'src/chinese'},
-    package_data={'chinese': ['data/cedict_ts.u8', 'data/dict.txt.big']},
+    package_data={'chinese': ['data/cedict.pickle', 'data/dict.txt.big']},
     include_package_data=True,
 
     install_requires=['jieba', 'pynlpir'],

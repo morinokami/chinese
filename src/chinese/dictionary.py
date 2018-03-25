@@ -4,6 +4,7 @@
 from collections import namedtuple
 import logging
 import os
+import pickle
 import re
 
 from chinese.converter import Converter
@@ -108,9 +109,13 @@ class Dictionary:
         if path is None:
             logger.info('Loading the default dictionary.')
             directory = os.path.abspath(os.path.dirname(__file__))
-            dict_path = os.path.join(directory, 'data', 'cedict_ts.u8')
-        with open(dict_path) as f:
-            self.traditional, self.simplified = self.__parse_data(f)
+            cedict = os.path.join(directory, 'data', 'cedict.pickle')
+            with open(cedict, 'rb') as f:
+                cedict_data = pickle.load(f)
+                self.traditional, self.simplified = cedict_data['traditional'], cedict_data['simplified']
+        else:
+            with open(path) as f:
+                self.traditional, self.simplified = self.__parse_data(f)
     
     def __init_dict_if_necessary(self):
         if self.traditional is None or self.simplified is None:
@@ -174,3 +179,17 @@ class Dictionary:
     def is_chinese_character(self, string):
         chinese_chars = r'[\u4e00-\u9fff]'
         return re.match(chinese_chars, string) is not None
+
+    def load_raw(self):
+        directory = os.path.abspath(os.path.dirname(__file__))
+        cedict = os.path.join(directory, 'data', 'cedict_ts.u8')
+        with open(cedict) as f:
+            self.traditional, self.simplified = self.__parse_data(f)
+
+    def export(self, to):
+        data = {
+            'simplified': self.simplified,
+            'traditional': self.traditional
+        }
+        with open(to, 'wb') as f:
+            pickle.dump(data, f)

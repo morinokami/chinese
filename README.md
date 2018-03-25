@@ -274,6 +274,6 @@ False
 MIT License
 
 ## Thanks
-[jieba](https://github.com/fxsjy/jieba) and [pynlpir](https://github.com/tsroten/pynlpir) are used to tokenize a Chinese text.
+[jieba](https://github.com/fxsjy/jieba) and [PyNLPIR](https://github.com/tsroten/pynlpir) are used to tokenize a Chinese text.
 
 [CC-CEDICT](https://www.mdbg.net/chinese/dictionary?page=cc-cedict) is used to lookup information for tokens.
