@@ -1,2 +1,2 @@
-include src/chinese/data/cedict_ts.u8
+include src/chinese/data/cedict.pickle
 include src/chinese/data/dict.txt.big

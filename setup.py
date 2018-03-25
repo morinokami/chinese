@@ -32,7 +32,7 @@ setup(
 
     packages=find_packages(where='src'),
     package_dir={'chinese': 'src/chinese'},
-    package_data={'chinese': ['data/cedict_ts.u8', 'data/dict.txt.big']},
+    package_data={'chinese': ['data/cedict.pickle', 'data/dict.txt.big']},
     include_package_data=True,
 
     install_requires=['jieba', 'pynlpir'],
