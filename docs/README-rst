@@ -286,7 +286,7 @@ Thanks
 ------
 
 `jieba <https://github.com/fxsjy/jieba>`__ and
-`pynlpir <https://github.com/tsroten/pynlpir>`__ are used to tokenize a
+`PyNLPIR <https://github.com/tsroten/pynlpir>`__ are used to tokenize a
 Chinese text.
 
 `CC-CEDICT <https://www.mdbg.net/chinese/dictionary?page=cc-cedict>`__

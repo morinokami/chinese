@@ -3,6 +3,10 @@
 Change Log
 ----------
 
+Version 0.2.1
++++++++++++++
+- Improved speed of loading default dictionary.
+
 Version 0.2.0
 +++++++++++++
 - Allow custom tokenizer to be used.

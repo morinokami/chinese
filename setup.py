@@ -5,7 +5,7 @@ with open('docs/README-rst') as f:
 
 setup(
     name='chinese',
-    version='0.2.0',
+    version='0.2.1',
     license='MIT',
     url='https://github.com/morinokami/chinese',
     keywords=['Chinese', 'text analysis'],
